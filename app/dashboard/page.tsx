@@ -158,6 +158,23 @@ export default function DashboardPage() {
 
   const emptyState = getEmptyStateMessage();
 
+  const sortedApplications = [...applications].sort((a, b) => {
+    switch (sortBy) {
+      case "appliedAt":
+        return (
+          new Date(b.appliedAt).getTime() - new Date(a.appliedAt).getTime()
+        );
+      case "-appliedAt":
+        return (
+          new Date(a.appliedAt).getTime() - new Date(b.appliedAt).getTime()
+        );
+      case "company":
+        return a.company.localeCompare(b.company);
+      default:
+        return 0;
+    }
+  });
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Navigation />
@@ -265,7 +282,7 @@ export default function DashboardPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {applications.map((app) => (
+            {sortedApplications.map((app) => (
               <ApplicationCard
                 key={app.id}
                 application={app}
