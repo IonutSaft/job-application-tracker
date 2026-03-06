@@ -1,3 +1,4 @@
+import { ERROR_MESSAGES, STORAGE_LIMITS } from "@/lib/constants";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
@@ -12,6 +13,15 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: "Email and password are required" },
         { status: 400 },
+      );
+    }
+
+    // Check if user limit is reached
+    const userCount = await prisma.user.count();
+    if (userCount >= STORAGE_LIMITS.MAX_TOTAL_USERS) {
+      return NextResponse.json(
+        { error: ERROR_MESSAGES.USER_LIMIT_REACHED },
+        { status: 403 },
       );
     }
 

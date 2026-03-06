@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import { ERROR_MESSAGES, STORAGE_LIMITS } from "@/lib/constants";
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -45,6 +46,18 @@ export async function POST(request: NextRequest) {
 
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    // Check if user has reached application limit
+    const applicationCount = await prisma.application.count({
+      where: { userId: session.user.id },
+    });
+
+    if (applicationCount >= STORAGE_LIMITS.MAX_APPLICATIONS_PER_USER) {
+      return NextResponse.json(
+        { error: ERROR_MESSAGES.APPLICATION_LIMIT_REACHED },
+        { status: 403 },
+      );
     }
 
     const { company, role, position, url, notes } = await request.json();

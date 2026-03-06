@@ -41,6 +41,12 @@ export const STATUS_CONFIG = {
 // Pagination
 export const ITEMS_PER_PAGE = 12;
 
+// Storage limits
+export const STORAGE_LIMITS = {
+  MAX_TOTAL_USERS: 50,
+  MAX_APPLICATIONS_PER_USER: 100,
+} as const;
+
 // Form validation
 export const VALIDATION_RULES = {
   EMAIL: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
@@ -72,4 +78,6 @@ export const ERROR_MESSAGES = {
   INVALID_CREDENTIALS: "Invalid email or password",
   REQUIRED_FIELD: "This field is required",
   SOMETHING_WENT_WRONG: "Something went wrong. Please try again.",
+  USER_LIMIT_REACHED: `Registration is currently closed as the maximum number of users (${STORAGE_LIMITS.MAX_TOTAL_USERS}) has been reached.`,
+  APPLICATION_LIMIT_REACHED: `You have reached the maximum limit of ${STORAGE_LIMITS.MAX_APPLICATIONS_PER_USER} applications.`,
 };
