@@ -77,7 +77,7 @@ export function ApplicationForm({
     <form onSubmit={handleSubmit} className="space-y-4">
       <Input
         label="Company Name"
-        placeholder="e.g., Acme Corp"
+        placeholder="e.g., Google"
         value={formData.company}
         onChange={(e) => setFormData({ ...formData, company: e.target.value })}
         error={errors.company}
